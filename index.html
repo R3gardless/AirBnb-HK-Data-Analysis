@@ -11,58 +11,102 @@
 
         <script src="https://d3js.org/d3.v7.min.js"></script>
         <script src="components/histogram.js"></script>
-        <script src="components/choropleth.js"></script>
         <script src="components/wordcloud.js"></script>
+        <script src="components/choropleth.js"></script>
     </head>
     <body>
-        <div class="container">
+        <div class="container p-0">
             <h1 class="text-center my-4">AirBnb HongKong Data Analysis</h1>
             <div>
-                <div class="me-5">
-                    <h3 class="text-center">HongKong District Map</h3>
-                    <div id="choropleth-tooltip" class="hidden shadow rounded">
-                        <div>
-                            <span>District : </span><strong><span id="choropleth-district-name"></span></strong>
+                <div>
+                    <div class="shadow-lg rounded p-3">
+                        <h3 class="text-center mb-3">HongKong🇭🇰 Districts</h3>
+                        <div id="choropleth-tooltip" class="hidden shadow rounded">
+                            <div>
+                                <span>District : </span><strong><span id="choropleth-district-name"></span></strong>
+                            </div>
+                            <div id="district-info-container">
+                            </div>
                         </div>
-                        <div id="district-info-container">
+                        <div>
+                            <div id="choropleth-container" class="position-relative">
+                                <div id="choropleth-legend" class="shadow rounded">
+                                    <p id="choropleth-legend-description" class="text-center mt-1 mb-0" style="font-size: .9rem;"></p>
+                                    <svg width="250" height="60"></svg>
+                                </div>   
+                                <div id="choropleth-options" class="shadow rounded">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="choropleth-encoding" id="choropleth-count" value="count" checked>
+                                        <label class="form-check-label" for="choropleth-count">Count</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="choropleth-encoding" id="choropleth-price" value="price">
+                                        <label class="form-check-label" for="choropleth-price">Price</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="choropleth-encoding" id="choropleth-score" value="score">
+                                        <label class="form-check-label" for="choropleth-score">Score</label>
+                                    </div>
+                                </div>
+                                <svg id="choropleth"></svg>
+                            </div>
                         </div>
                     </div>
                     <div>
-                        <div id="choropleth-container" class="position-relative">
-                            <div id="choropleth-legend" class="shadow rounded">
-                                <p id="choropleth-legend-description" class="text-center mt-1 mb-0" style="font-size: .9rem;"></p>
-                                <svg width="250" height="60"></svg>
-                            </div>   
-                            <div id="choropleth-options" class="shadow rounded">
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="choropleth-encoding" id="choropleth-count" value="count" checked>
-                                    <label class="form-check-label" for="choropleth-count">Count</label>
+                        <div class="d-flex justify-content-between my-5">
+                            <div>
+                                <h3>Detailed Analysis</h3>
+                                <div class="text-center">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="bar-encoding" id="bar-property" value="bar.property" checked>
+                                        <label class="form-check-label" for="bar-property">Property Type</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="bar-encoding" id="bar-room" value="bar.room" checked>
+                                        <label class="form-check-label" for="bar-room">Room Type</label>
+                                    </div>
                                 </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="choropleth-encoding" id="choropleth-price" value="price">
-                                    <label class="form-check-label" for="choropleth-price">Price</label>
-                                </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="choropleth-encoding" id="choropleth-score" value="score">
-                                    <label class="form-check-label" for="choropleth-score">Score</label>
+                                <div id="barchart">
+                                    <h5>Stacked Bar Chart will come here</h5>
                                 </div>
                             </div>
-                            <svg id="choropleth" class="shadow-lg rounded"></svg>
-     
+                            <div class="p-3 shadow-lg text-center rounded">
+                                <h3>Comments WordCloud ☁️</h3>
+                                <div>
+                                    <div class="form-group mb-3">
+                                        <label for="wordcloud-encoding-dropdown" class="mb-1">Select Review Rating</label>
+                                        <select class="form-control" id="wordcloud-encoding-dropdown" name="wordcloud-encoding">
+                                            <option value="5">⭐️⭐️⭐️⭐️⭐️</option>
+                                            <option value="4">⭐️⭐️⭐️⭐️</option>
+                                            <option value="3">⭐️⭐️⭐️</option>
+                                            <option value="2">⭐️⭐️</option>
+                                            <option value="1">⭐️</option>
+                                        </select>
+                                    </div>
+                                    <svg id="wordcloud"></svg>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
         <!-- Load topo -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
         <script src="https://d3js.org/topojson.v3.min.js"></script>
         <script src="https://d3js.org/d3-scale-chromatic.v3.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-cloud/1.2.5/d3.layout.cloud.min.js"></script>
 
         <script>
+            let filteredDistrcit = [];
             function updateChoropleth(choropleth) {
                 const mapEncoding = d3.select('input[name="choropleth-encoding"]:checked').property("value");
                 choropleth.update(mapEncoding);
+            }
+            function updateWordCloud(wordcloud) {
+                const reviewScore = +d3.select('#wordcloud-encoding-dropdown').property("value");
+                wordcloud.update(filteredDistrcit, reviewScore);
             }
             d3.csv("https://raw.githubusercontent.com/R3gardless/AirBnb-HK-Data-Analysis/main/data/airbnb_hk.csv")
                 .then(csvData => {
@@ -85,12 +129,18 @@
                     });
 
                     data = csvData;
+                    const wordcloud = new WordCloud("#wordcloud", data);
                     const choropleth = new Choropleth("#choropleth", data);
+                    wordcloud.initialize();
                     choropleth.initialize();
-
+                    choropleth.on("click", (clickedDistrict) => {
+                        filteredDistrcit = clickedDistrict;
+                        updateWordCloud(wordcloud);
+                    })
                     // Add event listeners for encoding change
                     d3.selectAll('input[name="choropleth-encoding"]').on("change", () => updateChoropleth(choropleth));
-            })
+                    d3.select('#wordcloud-encoding-dropdown').on('change', () => updateWordCloud(wordcloud));
+    });            
         </script>
     </body>
 </html>

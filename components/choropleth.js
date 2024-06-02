@@ -7,9 +7,15 @@ class Choropleth {
         this.hongKongCenter = [114.15, 22.33];
         this.legendWidth = 230;
         this.legendHeight = 40;
+        this.clickedDistrict = [];
+        this.handlers = {};
     
-        this.handleMouseMove = this.handleMouseMove.bind(this);
-        this.handleMouseOut = this.handleMouseOut.bind(this);
+        this.showTooltip = this.showTooltip.bind(this);
+        this.hideTooltip = this.hideTooltip.bind(this);
+    }
+
+    on(eventType, handler) {
+        this.handlers[eventType] = handler;
     }
 
     async initializeData() {
@@ -24,7 +30,7 @@ class Choropleth {
                 avgPrice: Math.round(d3.mean(v, d => +d.price) * 100) / 100,
                 avgReviewCount : Math.round(d3.mean(v, d => +d.number_of_reviews) * 100) / 100,
                 avgReviewRating: Math.round(d3.mean(v, d => +d.review_scores_rating) * 100) / 100,
-                medianReviewRating: d3.median(v, d => +d.review_scores_rating),
+                medianReviewRating: Math.round(d3.median(v, d => +d.review_scores_rating) * 100) / 100,
                 minReviewRating: Math.min(...v.map(d => +d.review_scores_rating)),
                 maxReviewRating: Math.max(...v.map(d => +d.review_scores_rating))
             }),
@@ -44,7 +50,7 @@ class Choropleth {
 
         this.features = this.svg.append("g");
 
-        d3.select(window).on("resize", () => this.resize());
+        $(window).on("resize", () => this.resize());
         this.update();
     }
     
@@ -82,10 +88,14 @@ class Choropleth {
                 }
             })
             .attr("stroke", "#333")
-            .on("mousemove", this.handleMouseMove)
-            .on("mouseout", this.handleMouseOut);
+            .on("mousemove", this.showTooltip)
+            .on("mouseout", this.hideTooltip)
+            .on("click", (event, d) => this.clickDistrict(event, d)); // Bind the click handler
+
+
             this.updateLegend(color, colorDomain);
     }
+
     updateLegend(color, colorDomain) {
         const legendWidth = this.legendWidth;
         const legendHeight = this.legendHeight;
@@ -132,15 +142,36 @@ class Choropleth {
             .style("font-size", ".8rem");
 
     }
+        
+    clickDistrict(event, d) {
 
+        const district = d.properties.NAME_1;
+        const isClicked = this.clickedDistrict.includes(district);
 
-    handleMouseMove(event, d) {
+        d3.select(event.target)
+            .style("opacity", isClicked ? "1" : "0.5")
+            .style("stroke", isClicked ? null : "black")
+            .style("stroke-width", isClicked ? null : "2.5px");
+        
+        if (isClicked) {
+            this.clickedDistrict = this.clickedDistrict.filter(d => d !== district);
+        } else {
+            this.clickedDistrict.push(district);
+        }
+
+        if (this.handlers["click"]) {
+            this.handlers["click"](this.clickedDistrict);
+        }
+    }
+
+    showTooltip(event, d) {
         const district = d.properties.NAME_1;
 
         d3.select(event.target)
             .style("opacity", 0.5)
-            .style("stroke", "gray")
+            .style("stroke", "black")
             .style("stroke-width", "2.5px")
+            .style("cursor", "pointer")
 
         d3.select("#choropleth-tooltip")
             .style("top", (event.pageY + 20) + "px")
@@ -203,13 +234,16 @@ class Choropleth {
         d3.select("#choropleth-tooltip").classed("hidden", false);
     }
 
-    handleMouseOut = (event) => {
+    hideTooltip(event, d) {
+        const district = d.properties.NAME_1;
+        
+        if(!this.clickedDistrict.includes(district)) {
+            d3.select(event.target)
+                .style("opacity", 1)
+                .style("stroke", null)
+                .style("stroke-width", null)
+        }
 
-        d3.select(event.target)
-            .style("opacity", 1)
-            .style("stroke", null)
-            .style("stroke-width", null)
-            
         d3.select("#choropleth-tooltip").classed("hidden", true);
     }
     
@@ -239,4 +273,6 @@ class Choropleth {
         this.svg.selectAll("path").attr("d", this.path);
         this.setupZoom();
     }
+
+
 }
