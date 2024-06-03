@@ -26,11 +26,11 @@ class Choropleth {
                 count: v.length,
                 minPrice: Math.min(...v.map(d => +d.price)),
                 maxPrice: Math.max(...v.map(d => +d.price)),
-                medianPrice: d3.median(v, d => +d.price),
+                medPrice: d3.median(v, d => +d.price),
                 avgPrice: Math.round(d3.mean(v, d => +d.price) * 100) / 100,
                 avgReviewCount : Math.round(d3.mean(v, d => +d.number_of_reviews) * 100) / 100,
                 avgReviewRating: Math.round(d3.mean(v, d => +d.review_scores_rating) * 100) / 100,
-                medianReviewRating: Math.round(d3.median(v, d => +d.review_scores_rating) * 100) / 100,
+                medReviewRating: Math.round(d3.median(v, d => +d.review_scores_rating) * 100) / 100,
                 minReviewRating: Math.min(...v.map(d => +d.review_scores_rating)),
                 maxReviewRating: Math.max(...v.map(d => +d.review_scores_rating))
             }),
@@ -54,7 +54,10 @@ class Choropleth {
         this.update();
     }
     
-    update(encoding = 'count') {
+    update(encoding = 'count', encodingOption = 'average') {
+
+
+
         this.encoding = encoding;
         // Define a color scale based on the current encoding
         let colorDomain;
@@ -62,9 +65,33 @@ class Choropleth {
         if (this.encoding === 'count') {
             colorDomain = d3.extent(this.districtData, d => d.count);
         } else if (this.encoding === 'price') {
-            colorDomain = d3.extent(this.districtData, d => d.avgPrice);
+            switch(encodingOption) {
+                case 'min':
+                    colorDomain = d3.extent(this.districtData, d => d.minPrice);
+                    break;
+                case 'max':
+                    colorDomain = d3.extent(this.districtData, d => d.maxPrice);
+                    break;
+                case 'median':
+                    colorDomain = d3.extent(this.districtData, d => d.medPrice);
+                    break;
+                default:
+                    colorDomain = d3.extent(this.districtData, d => d.avgPrice);
+            }
         } else {
-            colorDomain = d3.extent(this.districtData, d => d.avgReviewRating);
+            switch(encodingOption) {
+                case 'min':
+                    colorDomain = d3.extent(this.districtData, d => d.minReviewRating);
+                    break;
+                case 'max':
+                    colorDomain = d3.extent(this.districtData, d => d.maxReviewRating);
+                    break;
+                case 'median':
+                    colorDomain = d3.extent(this.districtData, d => d.medReviewRating);
+                    break;
+                default:
+                    colorDomain = d3.extent(this.districtData, d => d.avgReviewRating);
+            }
         }
 
         const color = d3.scaleSequential(d3.interpolateYlGn).domain(colorDomain);
@@ -82,9 +109,37 @@ class Choropleth {
                 if (this.encoding === 'count') {
                     return color(district.count);
                 } else if (this.encoding === 'price') {
-                    return color(district.avgPrice);
+                    let colorPriceData;
+                    switch(encodingOption) {
+                        case 'min':
+                            colorPriceData = district.minPrice;
+                            break;
+                        case 'max':
+                            colorPriceData = district.maxPrice;
+                            break;
+                        case 'median':
+                            colorPriceData = district.medPrice;
+                            break;
+                        default:
+                            colorPriceData = district.avgPrice;
+                    }
+                    return color(colorPriceData);
                 } else {
-                    return color(district.avgReviewRating);
+                    let colorReviewData;
+                    switch(encodingOption) {
+                        case 'min':
+                            colorReviewData = district.minReviewRating;
+                            break;
+                        case 'max':
+                            colorReviewData = district.maxReviewRating;
+                            break;
+                        case 'median':
+                            colorReviewData = district.medReviewRating;
+                            break;
+                        default:
+                            colorReviewData = district.avgReviewRating;
+                    }
+                    return color(colorReviewData);
                 }
             })
             .attr("stroke", "#333")
@@ -92,11 +147,11 @@ class Choropleth {
             .on("mouseout", this.hideTooltip)
             .on("click", (event, d) => this.clickDistrict(event, d)); // Bind the click handler
 
-
-            this.updateLegend(color, colorDomain);
+        this.updateLegend(color, colorDomain, encodingOption);
+        this.updateClickedDistrict();
     }
 
-    updateLegend(color, colorDomain) {
+    updateLegend(color, colorDomain, encodingOption = 'average') {
         const legendWidth = this.legendWidth;
         const legendHeight = this.legendHeight;
 
@@ -104,8 +159,8 @@ class Choropleth {
         const legendDescription = d3.select("#choropleth-legend-description");
 
         legendSvg.selectAll("*").remove();
-
-        legendDescription.text(this.encoding === 'count' ? "Number of listings" : this.encoding === 'price' ? "Average price" : "Average review rating");
+        const encodingOptionText = encodingOption === 'average' ? 'Average' : encodingOption === 'min' ? 'Minimum' : encodingOption === 'max' ? 'Maximum' : 'Median';
+        legendDescription.text(this.encoding === 'count' ? "Number of listings" : this.encoding === 'price' ? `${encodingOptionText} price` : `${encodingOptionText} review rating`);
 
         const defs = legendSvg.append("defs");
 
@@ -142,7 +197,14 @@ class Choropleth {
             .style("font-size", ".8rem");
 
     }
-        
+    updateClickedDistrict() {
+        this.clickedDistrict.forEach(district => {
+            const path = this.features.selectAll("path").filter(d => d.properties.NAME_1 === district);
+            path.style("opacity", "0.5")
+                .style("stroke", "black")
+                .style("stroke-width", "2.5px");
+        });
+    }
     clickDistrict(event, d) {
 
         const district = d.properties.NAME_1;
@@ -195,7 +257,7 @@ class Choropleth {
         
             tooltipInfo.append("div")
                 .attr("class", "choropleth-tooltip-field")
-                .html("<span class='field-name'>Median price : </span><span class='field-value'>" + districtData.medianPrice + "</span>")
+                .html("<span class='field-name'>Median price : </span><span class='field-value'>" + districtData.medPrice + "</span>")
         
 
             tooltipInfo.append("div")
@@ -214,7 +276,7 @@ class Choropleth {
         
             tooltipInfo.append("div")
                 .attr("class", "choropleth-tooltip-field")
-                .html("<span class='field-name'>Median review rating : </span><span class='field-value'>" + districtData.medianReviewRating + "</span>")
+                .html("<span class='field-name'>Median review rating : </span><span class='field-value'>" + districtData.medReviewRating + "</span>")
 
             tooltipInfo.append("div")
                 .attr("class", "choropleth-tooltip-field")

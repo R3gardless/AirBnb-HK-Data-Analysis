@@ -4,7 +4,11 @@ body {
 }
 
 .hidden {
-    display: none;
+    visibility: hidden;
+}
+
+input:hover, label:hover, select:hover {
+    cursor: pointer;
 }
 
 #choropleth-tooltip {
@@ -32,6 +36,26 @@ body {
     opacity: 0.9;
 }
 
+#choropleth-encoding-options {
+    position: absolute;
+    background-color: #fff;
+    padding: 10px;
+    top: 150px;
+    left: 15px;
+    opacity: 0.9;
+
+}
+
 .choropleth-tooltip-field .field-value {
     font-weight: bold;
+}
+
+#histogram-options{
+    width: 370px;
+    margin: auto;
+}
+
+#histogram-encoding-options {
+    width: 335px;
+    margin: auto;
 }

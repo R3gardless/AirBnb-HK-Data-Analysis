@@ -20,7 +20,7 @@
             <div>
                 <div>
                     <div class="shadow-lg rounded p-3">
-                        <h3 class="text-center mb-3">HongKong🇭🇰 Districts</h3>
+                        <h3 class="text-center mb-3">HongKong Districts 🇭🇰</h3>
                         <div id="choropleth-tooltip" class="hidden shadow rounded">
                             <div>
                                 <span>District : </span><strong><span id="choropleth-district-name"></span></strong>
@@ -34,7 +34,7 @@
                                     <p id="choropleth-legend-description" class="text-center mt-1 mb-0" style="font-size: .9rem;"></p>
                                     <svg width="250" height="60"></svg>
                                 </div>   
-                                <div id="choropleth-options" class="shadow rounded">
+                                <div id="choropleth-options" class="shadow px-3 py-1 rounded">
                                     <div class="form-check form-check-inline">
                                         <input class="form-check-input" type="radio" name="choropleth-encoding" id="choropleth-count" value="count" checked>
                                         <label class="form-check-label" for="choropleth-count">Count</label>
@@ -44,8 +44,26 @@
                                         <label class="form-check-label" for="choropleth-price">Price</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="choropleth-encoding" id="choropleth-score" value="score">
-                                        <label class="form-check-label" for="choropleth-score">Score</label>
+                                        <input class="form-check-input" type="radio" name="choropleth-encoding" id="choropleth-rating" value="rating">
+                                        <label class="form-check-label" for="choropleth-rating">Rating</label>
+                                    </div>
+                                </div>
+                                <div id="choropleth-encoding-options" class="mt-3 px-3 py-1 shadow rounded hidden">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="choropleth-encoding-option" id="choropleth-min" value="min">
+                                        <label class="form-check-label" for="choropleth-min">Min</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="choropleth-encoding-option" id="choropleth-max" value="max">
+                                        <label class="form-check-label" for="choropleth-max">Max</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="choropleth-encoding-option" id="choropleth-average" value="average" checked>
+                                        <label class="form-check-label" for="choropleth-average">Avg</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="choropleth-encoding-option" id="choropleth-median" value="median">
+                                        <label class="form-check-label" for="choropleth-median">Med</label>
                                     </div>
                                 </div>
                                 <svg id="choropleth"></svg>
@@ -53,28 +71,48 @@
                         </div>
                     </div>
                     <div>
-                        <div class="d-flex justify-content-between my-5">
-                            <div>
-                                <h3>Detailed Analysis</h3>
-                                <div class="text-center">
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="bar-encoding" id="bar-property" value="bar.property" checked>
-                                        <label class="form-check-label" for="bar-property">Property Type</label>
+                        <div class="d-flex justify-content-between mt-5 mb-3">
+                            <div class="p-3 shadow-lg text-center rounded">
+                                <h3>Detail Analysis 📊</h3>
+                                <div id="histogram-options" class="mt-1 px-3 py-1 shadow rounded d-flex justify-content-around">
+                                    <div class="form-check form-check-inline  m-0">
+                                        <input class="form-check-input" type="radio" name="bar-encoding" id="bar-count" value="count">
+                                        <label class="form-check-label" for="bar-count">Count</label>
                                     </div>
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="bar-encoding" id="bar-room" value="bar.room" checked>
-                                        <label class="form-check-label" for="bar-room">Room Type</label>
+                                    <div class="form-check form-check-inline m-0">
+                                        <input class="form-check-input" type="radio" name="bar-encoding" id="bar-price" value="price" checked>
+                                        <label class="form-check-label" for="bar-price">Price</label>
+                                    </div>
+                                    <div class="form-check form-check-inline m-0">
+                                        <input class="form-check-input" type="radio" name="bar-encoding" id="bar-accommodate" value="accommodate">
+                                        <label class="form-check-label" for="bar-accommodate">Accommodate</label>
                                     </div>
                                 </div>
-                                <div id="barchart">
-                                    <h5>Stacked Bar Chart will come here</h5>
+                                <div id="histogram-encoding-options" class="mt-3 px-3 py-1 shadow rounded d-flex justify-content-around">
+                                    <div class="form-check form-check-inline m-0">
+                                        <input class="form-check-input" type="radio" name="bar-encoding-option" id="bar-min" value="min">
+                                        <label class="form-check-label" for="bar-min">Min</label>
+                                    </div>
+                                    <div class="form-check form-check-inline m-0">
+                                        <input class="form-check-input" type="radio" name="bar-encoding-option" id="bar-max" value="max">
+                                        <label class="form-check-label" for="bar-max">Max</label>
+                                    </div>
+                                    <div class="form-check form-check-inline m-0">
+                                        <input class="form-check-input" type="radio" name="bar-encoding-option" id="bar-average" value="average" checked>
+                                        <label class="form-check-label" for="bar-average">Avg</label>
+                                    </div>
+                                    <div class="form-check form-check-inline m-0">
+                                        <input class="form-check-input" type="radio" name="bar-encoding-option" id="bar-median" value="median">
+                                        <label class="form-check-label" for="bar-median">Med</label>
+                                    </div>
                                 </div>
+                                <svg id="histogram"></svg>
                             </div>
                             <div class="p-3 shadow-lg text-center rounded">
                                 <h3>Comments WordCloud ☁️</h3>
                                 <div>
                                     <div class="form-group mb-3">
-                                        <label for="wordcloud-encoding-dropdown" class="mb-1">Select Review Rating</label>
+                                        <label for="wordcloud-encoding-dropdown" class="mb-1" style="font-size:1.3rem">Select Review Rating</label>
                                         <select class="form-control" id="wordcloud-encoding-dropdown" name="wordcloud-encoding">
                                             <option value="5">⭐️⭐️⭐️⭐️⭐️</option>
                                             <option value="4">⭐️⭐️⭐️⭐️</option>
@@ -99,15 +137,49 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-cloud/1.2.5/d3.layout.cloud.min.js"></script>
 
         <script>
-            let filteredDistrcit = [];
+            let filteredDistrict = [];
             function updateChoropleth(choropleth) {
                 const mapEncoding = d3.select('input[name="choropleth-encoding"]:checked').property("value");
-                choropleth.update(mapEncoding);
+                const encodingOption = d3.select('input[name="choropleth-encoding-option"]:checked').property("value");
+                choropleth.update(mapEncoding, encodingOption);
+            }
+            function updateHistogram(histogram) {
+                const barEncoding = d3.select('input[name="bar-encoding"]:checked').property("value");
+                const encodingOption =  d3.select('input[name="bar-encoding-option"]:checked').property("value");
+                histogram.update(filteredDistrict, barEncoding, encodingOption);
             }
             function updateWordCloud(wordcloud) {
                 const reviewScore = +d3.select('#wordcloud-encoding-dropdown').property("value");
-                wordcloud.update(filteredDistrcit, reviewScore);
+                wordcloud.update(filteredDistrict, reviewScore);
             }
+            function checkChoropolthEncodingSelection() {
+                const mapEncoding = d3.select('input[name="choropleth-encoding"]:checked').property("value");
+                const choroplethEncodingOptions = document.getElementById("choropleth-encoding-options");
+
+                if (mapEncoding === 'price' || mapEncoding === 'rating') {
+                    choroplethEncodingOptions.style.visibility = 'visible';
+                } else {
+                    choroplethEncodingOptions.style.visibility = 'hidden';
+                }
+            }
+            function checkBarEncodingSelection() {
+                const barencoding = d3.select('input[name="bar-encoding"]:checked').property("value");
+                const histogramEncodingOptions = document.getElementById("histogram-encoding-options");
+
+                if (barYencoding === 'price' || barYencoding === 'accommodate') {
+                    histogramEncodingOptions.style.visibility = 'visible';
+                } else {
+                    histogramEncodingOptions.style.visibility = 'hidden';
+                }
+            }
+            const choroplethRadioBtns = document.querySelectorAll('input[name="choropleth-encoding"]');
+            const histogramRadioBtns = document.querySelectorAll('input[name="bar-encoding"]');
+            choroplethRadioBtns.forEach(radioBtn => {
+                radioBtn.addEventListener('change', checkChoropolthEncodingSelection);
+            });
+            histogramRadioBtns.forEach(radioBtn => {
+                radioBtn.addEventListener('change', checkBarEncodingSelection);
+            });
             d3.csv("https://raw.githubusercontent.com/R3gardless/AirBnb-HK-Data-Analysis/main/data/airbnb_hk.csv")
                 .then(csvData => {
                         csvData.forEach(d => {
@@ -129,16 +201,23 @@
                     });
 
                     data = csvData;
-                    const wordcloud = new WordCloud("#wordcloud", data);
                     const choropleth = new Choropleth("#choropleth", data);
-                    wordcloud.initialize();
+                    const wordcloud = new WordCloud("#wordcloud", data);
+                    const histogram = new Histogram("#histogram", data);
+
                     choropleth.initialize();
+                    wordcloud.initialize();
+                    histogram.initialize();
+
                     choropleth.on("click", (clickedDistrict) => {
-                        filteredDistrcit = clickedDistrict;
+                        filteredDistrict = clickedDistrict;
                         updateWordCloud(wordcloud);
                     })
                     // Add event listeners for encoding change
                     d3.selectAll('input[name="choropleth-encoding"]').on("change", () => updateChoropleth(choropleth));
+                    d3.selectAll('input[name="choropleth-encoding-option"]').on("change", () => updateChoropleth(choropleth));
+                    d3.selectAll('input[name="bar-encoding"]').on("change", () => updateHistogram(histogram));
+                    d3.selectAll('input[name="bar-encoding-option"]').on("change", () => updateHistogram(histogram));
                     d3.select('#wordcloud-encoding-dropdown').on('change', () => updateWordCloud(wordcloud));
     });            
         </script>
