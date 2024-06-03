@@ -3,8 +3,6 @@ class WordCloud {
         this.selector = selector;
         this.data = data;
         this.maximalComments = 50;
-        this.width = 500;
-        this.height = 500;
         this.stopWords = [
             "able", "about", "above", "abroad", "according", "accordingly", "across",
             "actually", "adj", "after", "afterwards", "again", "against", "ago", "ahead",
@@ -133,7 +131,6 @@ class WordCloud {
         this.resize();
 
         $(window).on("resize", () => this.resize());
-        d3.select(window).on("resize", () => this.resize());
 
         this.update();
     }
@@ -194,10 +191,10 @@ class WordCloud {
         if(currentWidth != this.width) updateFlag = true;
         this.width = parseInt(d3.select(".container").style("width")) / 2 - 50;
     
-        this.width = Math.max(this.width, 502);
+        this.width = Math.max(this.width, 420);
         this.height = this.width;
         this.svg.style("width", this.width + "px").style("height", this.height + "px");
 
-        if(updateFlag && this.width > 502) this.update();
+        if(updateFlag && this.width > 420) this.update();
     }
 }
