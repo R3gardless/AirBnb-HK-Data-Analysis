@@ -19,7 +19,7 @@ class Choropleth {
     }
 
     async initializeData() {
-        // Group data by district and calculate statistics
+
         this.districtData = d3.rollups(
             this.data,
             v => ({
@@ -37,7 +37,6 @@ class Choropleth {
             d => d.district
         ).map(([key, value]) => ({ district: key, ...value }));
 
-        // Fetch the GeoJSON data
         this.geoData = await d3.json("data/gadm36_HKG.json");
     }
 
@@ -59,7 +58,6 @@ class Choropleth {
 
 
         this.encoding = encoding;
-        // Define a color scale based on the current encoding
         let colorDomain;
 
         if (this.encoding === 'count') {
@@ -96,7 +94,6 @@ class Choropleth {
 
         const color = d3.scaleSequential(d3.interpolateYlGn).domain(colorDomain);
 
-        // Bind data and create the map
         this.features.selectAll("path").remove();
 
         this.features.selectAll("path")
@@ -145,7 +142,7 @@ class Choropleth {
             .attr("stroke", "#333")
             .on("mousemove", this.showTooltip)
             .on("mouseout", this.hideTooltip)
-            .on("click", (event, d) => this.clickDistrict(event, d)); // Bind the click handler
+            .on("click", (event, d) => this.clickDistrict(event, d));
 
         this.updateLegend(color, colorDomain, encodingOption);
         this.updateClickedDistrict();

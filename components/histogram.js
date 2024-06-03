@@ -58,7 +58,6 @@ class Histogram {
         if (clickedDistrict.length === 0) {
             data = this.roomTypeData;
         } else {
-            // Iterate Clicked Districts and gather data
             let tmp = []
             clickedDistrict.forEach(district => {
                 this.data.filter(d => d.district === district).forEach(d => {
@@ -88,18 +87,16 @@ class Histogram {
 
         const encodingKey = encoding === "count" ? "count" : `${encodingOption}${encoding.charAt(0).toUpperCase() + encoding.slice(1)}`;
 
-        // Flatten data
         data = data.map(([room_type, values]) => ({ room_type, ...values }));
-        // Update scales
+
         this.xScale.domain(data.sort((a, b) => d3.ascending(a.room_type, b.room_type)).map(d => d.room_type))
             .range([0, this.width])
             .padding(0.3);
         this.yScale.domain([0, d3.max(data, d => d[encodingKey])]).range([this.height, 0]);
 
-        // Define a color scale
         const colorScale = d3.scaleOrdinal()
             .domain(data.map(d => d.room_type))
-            .range(d3.schemeCategory10);  // Or use your own array of colors
+            .range(d3.schemeCategory10);
 
 
         this.container.selectAll("rect")

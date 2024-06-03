@@ -171,7 +171,7 @@ class WordCloud {
     }
 
     draw(words) {
-        this.svg.selectAll("*").remove(); // Clear previous words
+        this.svg.selectAll("*").remove();
         this.svg.append("g")
             .attr("transform", `translate(${this.width / 2}, ${this.height / 2})`)
             .selectAll("text")
