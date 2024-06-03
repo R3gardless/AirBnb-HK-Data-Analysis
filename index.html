@@ -34,21 +34,21 @@
                                     <p id="choropleth-legend-description" class="text-center mt-1 mb-0" style="font-size: .9rem;"></p>
                                     <svg width="250" height="60"></svg>
                                 </div>   
-                                <div id="choropleth-options" class="shadow px-3 py-1 rounded">
-                                    <div class="form-check form-check-inline">
+                                <div id="choropleth-options" class="shadow px-3 py-1 rounded d-flex justify-content-around">
+                                    <div class="form-check form-check-inline m-0">
                                         <input class="form-check-input" type="radio" name="choropleth-encoding" id="choropleth-count" value="count" checked>
                                         <label class="form-check-label" for="choropleth-count">Count</label>
                                     </div>
-                                    <div class="form-check form-check-inline">
+                                    <div class="form-check form-check-inline m-0">
                                         <input class="form-check-input" type="radio" name="choropleth-encoding" id="choropleth-price" value="price">
                                         <label class="form-check-label" for="choropleth-price">Price</label>
                                     </div>
-                                    <div class="form-check form-check-inline">
+                                    <div class="form-check form-check-inline m-0">
                                         <input class="form-check-input" type="radio" name="choropleth-encoding" id="choropleth-rating" value="rating">
                                         <label class="form-check-label" for="choropleth-rating">Rating</label>
                                     </div>
                                 </div>
-                                <div id="choropleth-encoding-options" class="mt-3 px-3 py-1 shadow rounded hidden">
+                                <div id="choropleth-encoding-options" class="mt-3 px-3 py-1 shadow rounded" style="visibility: hidden;">
                                     <div class="form-check form-check-inline">
                                         <input class="form-check-input" type="radio" name="choropleth-encoding-option" id="choropleth-min" value="min">
                                         <label class="form-check-label" for="choropleth-min">Min</label>
@@ -71,24 +71,35 @@
                         </div>
                     </div>
                     <div>
-                        <div class="d-flex justify-content-between mt-5 mb-3">
+                        <div class="d-flex justify-content-between my-5">
                             <div class="p-3 shadow-lg text-center rounded">
                                 <h3>Detail Analysis 📊</h3>
+                                <div id="histogram-tooltip" class="hidden shadow rounded">
+                                    <div>
+                                        <span>RoomType : </span><strong><span id="histogram-room-type"></span></strong>
+                                    </div>
+                                    <div id="histogram-info-container">
+                                    </div>
+                                </div>
                                 <div id="histogram-options" class="mt-1 px-3 py-1 shadow rounded d-flex justify-content-around">
                                     <div class="form-check form-check-inline  m-0">
-                                        <input class="form-check-input" type="radio" name="bar-encoding" id="bar-count" value="count">
+                                        <input class="form-check-input" type="radio" name="bar-encoding" id="bar-count" value="count" checked>
                                         <label class="form-check-label" for="bar-count">Count</label>
                                     </div>
                                     <div class="form-check form-check-inline m-0">
-                                        <input class="form-check-input" type="radio" name="bar-encoding" id="bar-price" value="price" checked>
+                                        <input class="form-check-input" type="radio" name="bar-encoding" id="bar-price" value="price">
                                         <label class="form-check-label" for="bar-price">Price</label>
                                     </div>
                                     <div class="form-check form-check-inline m-0">
                                         <input class="form-check-input" type="radio" name="bar-encoding" id="bar-accommodate" value="accommodate">
                                         <label class="form-check-label" for="bar-accommodate">Accommodate</label>
                                     </div>
+                                    <div class="form-check form-check-inline m-0">
+                                        <input class="form-check-input" type="radio" name="bar-encoding" id="bar-review" value="review">
+                                        <label class="form-check-label" for="bar-review">Review #</label>
+                                    </div>
                                 </div>
-                                <div id="histogram-encoding-options" class="mt-3 px-3 py-1 shadow rounded d-flex justify-content-around">
+                                <div id="histogram-encoding-options" class="mt-3 mb-3 px-3 py-1 shadow rounded d-flex justify-content-around" style="visibility: hidden;">
                                     <div class="form-check form-check-inline m-0">
                                         <input class="form-check-input" type="radio" name="bar-encoding-option" id="bar-min" value="min">
                                         <label class="form-check-label" for="bar-min">Min</label>
@@ -163,13 +174,13 @@
                 }
             }
             function checkBarEncodingSelection() {
-                const barencoding = d3.select('input[name="bar-encoding"]:checked').property("value");
+                const barEncoding = d3.select('input[name="bar-encoding"]:checked').property("value");
                 const histogramEncodingOptions = document.getElementById("histogram-encoding-options");
 
-                if (barYencoding === 'price' || barYencoding === 'accommodate') {
-                    histogramEncodingOptions.style.visibility = 'visible';
-                } else {
+                if (barEncoding === 'count') {
                     histogramEncodingOptions.style.visibility = 'hidden';
+                } else {
+                    histogramEncodingOptions.style.visibility = 'visible';
                 }
             }
             const choroplethRadioBtns = document.querySelectorAll('input[name="choropleth-encoding"]');
@@ -211,6 +222,7 @@
 
                     choropleth.on("click", (clickedDistrict) => {
                         filteredDistrict = clickedDistrict;
+                        updateHistogram(histogram);
                         updateWordCloud(wordcloud);
                     })
                     // Add event listeners for encoding change

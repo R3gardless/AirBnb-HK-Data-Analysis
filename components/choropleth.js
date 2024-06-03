@@ -247,49 +247,49 @@ class Choropleth {
         if(this.encoding === 'count') {
             const districtData = this.districtData.find(dd => dd.district === district);
             tooltipInfo.append("div")
-                .attr("class", "choropleth-tooltip-field")
+                .attr("class", "tooltip-field")
                 .html("<span class='field-name'>Number of listings : </span><span class='field-value'>" + districtData.count + "</span>")
         } else if(this.encoding === 'price') {
             const districtData = this.districtData.find(dd => dd.district === district);
             tooltipInfo.append("div")
-                .attr("class", "choropleth-tooltip-field")
+                .attr("class", "tooltip-field")
                 .html("<span class='field-name'>Average price : </span><span class='field-value'>" + districtData.avgPrice + "</span>")
         
             tooltipInfo.append("div")
-                .attr("class", "choropleth-tooltip-field")
+                .attr("class", "tooltip-field")
                 .html("<span class='field-name'>Median price : </span><span class='field-value'>" + districtData.medPrice + "</span>")
         
 
             tooltipInfo.append("div")
-                .attr("class", "choropleth-tooltip-field")
+                .attr("class", "tooltip-field")
                 .html("<span class='field-name'>Minimum price : </span><span class='field-value'>" + districtData.minPrice + "</span>")
 
             tooltipInfo.append("div")
-                .attr("class", "choropleth-tooltip-field")
+                .attr("class", "tooltip-field")
                 .html("<span class='field-name'>Maximum price : </span><span class='field-value'>" + districtData.maxPrice + "</span>")
             
         } else {
             const districtData = this.districtData.find(dd => dd.district === district);
             tooltipInfo.append("div")
-                .attr("class", "choropleth-tooltip-field")
+                .attr("class", "tooltip-field")
                 .html("<span class='field-name'>Average review rating : </span><span class='field-value'>" + districtData.avgReviewRating + "</span>")
         
             tooltipInfo.append("div")
-                .attr("class", "choropleth-tooltip-field")
+                .attr("class", "tooltip-field")
                 .html("<span class='field-name'>Median review rating : </span><span class='field-value'>" + districtData.medReviewRating + "</span>")
 
             tooltipInfo.append("div")
-                .attr("class", "choropleth-tooltip-field")
+                .attr("class", "tooltip-field")
                 .html("<span class='field-name'>Minimum review rating : </span><span class='field-value'>" + districtData.minReviewRating + "</span>")
         
 
             tooltipInfo.append("div")
-                .attr("class", "choropleth-tooltip-field")
+                .attr("class", "tooltip-field")
                 .html("<span class='field-name'>Maximum review rating : </span><span class='field-value'>" + districtData.maxReviewRating + "</span>")
             
 
             tooltipInfo.append("div")
-                .attr("class", "choropleth-tooltip-field")
+                .attr("class", "tooltip-field")
                 .html("<span class='field-name'>Average review count : </span><span class='field-value'>" + districtData.avgReviewCount + "</span>")}
 
 

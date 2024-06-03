@@ -4,14 +4,14 @@ body {
 }
 
 .hidden {
-    visibility: hidden;
+    display: none;
 }
 
 input:hover, label:hover, select:hover {
     cursor: pointer;
 }
 
-#choropleth-tooltip {
+#choropleth-tooltip{
     position: absolute;
     background-color: #fff;
     padding: 10px;
@@ -29,11 +29,13 @@ input:hover, label:hover, select:hover {
 
 #choropleth-options {
     position: absolute;
+    width: 270px;  
     background-color: #fff;
     padding: 10px;
     top: 115px;
     left: 15px;
     opacity: 0.9;
+    font-size:.95rem;
 }
 
 #choropleth-encoding-options {
@@ -43,6 +45,7 @@ input:hover, label:hover, select:hover {
     top: 150px;
     left: 15px;
     opacity: 0.9;
+    font-size:.95rem;
 
 }
 
@@ -50,12 +53,26 @@ input:hover, label:hover, select:hover {
     font-weight: bold;
 }
 
+#histogram-tooltip{
+    position: absolute;
+    background-color: #fff;
+    padding: 10px;
+    opacity: 0.9;
+    z-index: 100;
+}
+
 #histogram-options{
-    width: 370px;
+    font-size:.95rem;
+    width: 420px;
     margin: auto;
 }
 
 #histogram-encoding-options {
-    width: 335px;
+    font-size:.95rem;
+    width: 325px;
     margin: auto;
+}
+
+.histogram-tooltip-field .field-value {
+    font-weight: bold;
 }

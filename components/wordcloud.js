@@ -155,7 +155,7 @@ class WordCloud {
             console.error(`No comments for district ${clickedDistrict} and rating ${rating}`);
             return;
         }
-        // console.log tyyo of comments
+
         if (Array.isArray(comments)) {
             comments = comments.map(comment => JSON.stringify(comment)).join(" ");
         }
@@ -179,7 +179,7 @@ class WordCloud {
             .enter().append("text")
             .style("font-size", d => d.size + "px")
             .style("font-family", "Impact")
-            .style("fill", (d, i) => d3.schemeCategory10[i % 10])
+            .style("fill", (_, i) => d3.schemeCategory10[i % 10])
             .attr("text-anchor", "middle")
             .attr("transform", d => `translate(${d.x},${d.y})rotate(${d.rotate})`)
             .text(d => d.text);
