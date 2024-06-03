@@ -118,13 +118,18 @@ class Histogram {
             .attr("transform", `translate(${this.margin.left}, ${this.margin.top + this.height})`)
             .transition()
             .call(d3.axisBottom(this.xScale))
-            .style("font-size", ".9rem");
+            .style("font-size", "1rem");
         
         this.yAxis
             .attr("transform", `translate(${this.margin.left}, ${this.margin.top})`)
             .transition()
             .call(d3.axisLeft(this.yScale).ticks(5))
             .style("font-size", ".9rem");
+        
+        this.svg.append("text")             
+            .attr("transform", `translate(${this.width / 2 + 25}, ${this.height + this.margin.top + 40})`)
+            .style("text-anchor", "middle")
+            .text("Room Type");
     }
 
 
